@@ -29,6 +29,9 @@ jobs:
             echo "Waiting for MySQL..."
             sleep 5
           done
+          
+      - name: Copia o .env.dev para .env
+        run: cp .env.dev .env
 
       - name: Composer install
         run: |
@@ -37,6 +40,14 @@ jobs:
       - name: Symfony check requirements
         run: |
           docker exec p2pay_php php bin/console about
+
+      - name: Run PHPStan
+        run: |
+          docker exec p2pay_php vendor/bin/phpstan analyse --no-progress
+
+      - name: Run PHP-CS-Fixer (dry-run)
+        run: |
+          docker exec p2pay_php vendor/bin/php-cs-fixer fix --dry-run --diff
 
       # TODO: habilitar posteriormente quando criar os testes
 #      - name: Run tests (se houver)
