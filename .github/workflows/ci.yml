@@ -1,0 +1,55 @@
+name: CI P2Pay
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d --build
+
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker exec p2pay_mysql mysqladmin ping -pp2pay --silent; do
+            echo "Waiting for MySQL..."
+            sleep 5
+          done
+          
+      - name: Copia o .env.dev para .env
+        run: cp .env.dev .env
+
+      - name: Composer install
+        run: |
+          docker exec -u root p2pay_php composer install
+
+      - name: Symfony check requirements
+        run: |
+          docker exec p2pay_php php bin/console about
+
+      - name: Run PHPStan
+        run: |
+          docker exec p2pay_php vendor/bin/phpstan analyse --no-progress
+
+      - name: Run PHP-CS-Fixer (dry-run)
+        run: |
+          docker exec p2pay_php vendor/bin/php-cs-fixer fix --dry-run --diff
+
+      # TODO: habilitar posteriormente quando criar os testes
+#      - name: Run tests (se houver)
+#        run: |
+#          docker exec p2pay_php php bin/phpunit
