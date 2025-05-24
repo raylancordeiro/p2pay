@@ -36,6 +36,9 @@ class User
     #[ORM\Column]
     private \DateTimeImmutable $updatedAt;
 
+    #[ORM\Column]
+    private ?int $balance = 0;
+
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
@@ -135,6 +138,18 @@ class User
     public function setRole(UserRole $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getBalance(): ?int
+    {
+        return $this->balance;
+    }
+
+    public function setBalance(int $balance): static
+    {
+        $this->balance = $balance;
 
         return $this;
     }
