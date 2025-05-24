@@ -19,6 +19,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Copia o .env.dev para .env
+        run: cp .env.dev .env
+
       - name: Set up Docker
         run: |
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d --build
@@ -29,9 +32,6 @@ jobs:
             echo "Waiting for MySQL..."
             sleep 5
           done
-          
-      - name: Copia o .env.dev para .env
-        run: cp .env.dev .env
 
       - name: Composer install
         run: |
@@ -43,11 +43,11 @@ jobs:
 
       - name: Run PHPStan
         run: |
-          docker exec p2pay_php vendor/bin/phpstan analyse --no-progress
+          docker exec p2pay_php composer stan
 
       - name: Run PHP-CS-Fixer (dry-run)
         run: |
-          docker exec p2pay_php vendor/bin/php-cs-fixer fix --dry-run --diff
+          docker exec p2pay_php composer cs-check
 
       # TODO: habilitar posteriormente quando criar os testes
 #      - name: Run tests (se houver)

@@ -11,3 +11,6 @@ parameters:
   excludePaths:
     - %currentWorkingDirectory%/var/*
     - %currentWorkingDirectory%/vendor/*
+
+includes:
+  - vendor/phpstan/phpstan-doctrine/extension.neon
