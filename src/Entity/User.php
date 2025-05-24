@@ -39,7 +39,7 @@ class User
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $now = new \DateTimeImmutable();
+        $now             = new \DateTimeImmutable();
         $this->createdAt = $now;
         $this->updatedAt = $now;
     }
@@ -138,5 +138,4 @@ class User
 
         return $this;
     }
-
 }

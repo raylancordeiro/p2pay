@@ -22,6 +22,7 @@
         "doctrine/doctrine-fixtures-bundle": "^4.1",
         "friendsofphp/php-cs-fixer": "^3.75",
         "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
         "symfony/maker-bundle": "^1.63"
     },
     "config": {
@@ -61,7 +62,11 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "stan": "phpstan analyse",
+        "git-diff": "git diff -- . ':(exclude)*.lock'"
     },
     "conflict": {
         "symfony/symfony": "*"

@@ -43,11 +43,11 @@ jobs:
 
       - name: Run PHPStan
         run: |
-          docker exec p2pay_php vendor/bin/phpstan analyse --no-progress
+          docker exec p2pay_php composer stan
 
       - name: Run PHP-CS-Fixer (dry-run)
         run: |
-          docker exec p2pay_php vendor/bin/php-cs-fixer fix --dry-run --diff
+          docker exec p2pay_php composer cs-check
 
       # TODO: habilitar posteriormente quando criar os testes
 #      - name: Run tests (se houver)
