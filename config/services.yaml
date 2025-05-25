@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    authorization_base_url: '%env(AUTHORIZATION_BASE_URL)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -26,3 +26,6 @@ services:
     App\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+    App\Service\Integration\AuthorizationIntegrationService:
+        arguments:
+            $baseUrl: '%authorization_base_url%'
