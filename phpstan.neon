@@ -1,0 +1,16 @@
+parameters:
+  level: 5
+  paths:
+    - src
+    - config
+    - bin
+    - public
+#    TODO: Habilitar quando implementar os testes
+#    - tests
+
+  excludePaths:
+    - %currentWorkingDirectory%/var/*
+    - %currentWorkingDirectory%/vendor/*
+
+includes:
+  - vendor/phpstan/phpstan-doctrine/extension.neon
