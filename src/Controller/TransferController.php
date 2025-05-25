@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Application\User\UserResolver;
 use App\Form\TransferType;
 use App\Service\TransferService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -22,7 +21,6 @@ final class TransferController extends AbstractController
         FormFactoryInterface $formFactory,
         TransferService $transferService,
         UserResolver $userResolver,
-        EntityManagerInterface $em,
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 

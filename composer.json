@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.1",
+        "fakerphp/faker": "^1.24",
         "friendsofphp/php-cs-fixer": "^3.75",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0",
@@ -73,7 +74,8 @@
         "cs-check": "php-cs-fixer fix --dry-run --diff",
         "cs-fix": "php-cs-fixer fix",
         "stan": "phpstan analyse",
-        "git-diff": "git diff -- . ':(exclude)*.lock'"
+        "git-diff": "git diff -- . ':(exclude)*.lock'",
+        "test": "php bin/phpunit"
     },
     "conflict": {
         "symfony/symfony": "*"
