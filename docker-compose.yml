@@ -58,6 +58,22 @@ services:
     networks:
       - p2pay
 
+  react_php_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: p2pay_react
+    working_dir: /var/www
+    command: php react-server.php
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - p2pay_mysql
+    networks:
+      - p2pay
+    ports:
+      - "8081:8081"
+
 volumes:
   p2pay_mysql_data:
 
