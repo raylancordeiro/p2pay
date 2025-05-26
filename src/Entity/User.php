@@ -18,10 +18,10 @@ class User
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 11)]
+    #[ORM\Column(length: 11, unique: true)]
     private ?string $cpf = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 25)]

@@ -5,15 +5,13 @@ namespace App\Controller;
 use App\Application\User\UserResolver;
 use App\Form\TransferType;
 use App\Service\TransferService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class TransferController extends AbstractController
+final class TransferController extends BaseController
 {
     #[Route('/transfer', name: 'app_transfer', methods: ['POST'])]
     public function transfer(
@@ -46,15 +44,5 @@ final class TransferController extends AbstractController
             'payer'  => $transfer->getPayer()->getName(),
             'payee'  => $transfer->getPayee()->getName(),
         ]], Response::HTTP_CREATED);
-    }
-
-    private function getErrors(FormInterface $form): JsonResponse
-    {
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[$error->getOrigin()->getName()] = $error->getMessage();
-        }
-
-        return $this->json(['errors' => $errors], Response::HTTP_BAD_REQUEST);
     }
 }

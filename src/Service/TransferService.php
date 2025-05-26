@@ -10,6 +10,7 @@ use App\Service\Integration\AuthorizationIntegrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class TransferService
 {
@@ -17,6 +18,7 @@ class TransferService
         private readonly EntityManagerInterface $em,
         private readonly AuthorizationIntegrationService $authorizationService,
         private readonly MessageBusInterface $bus,
+        private readonly CacheInterface $cache,
     ) {
     }
 
@@ -26,6 +28,9 @@ class TransferService
     public function execute(int $value, User $payer, User $payee): Transfer
     {
         $connection = $this->em->getConnection();
+
+        $this->cache->delete('user_balance_'.$payer->getId());
+        $this->cache->delete('user_balance_'.$payee->getId());
 
         return $connection->transactional(function () use ($value, $payer, $payee) {
             $payer->setBalance($payer->getBalance() - $value);
