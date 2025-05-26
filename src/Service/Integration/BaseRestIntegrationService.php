@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\Integration;
 
 use Psr\Log\LoggerInterface;
@@ -13,6 +15,9 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * Classe pai das integrações REST.
+ */
 abstract class BaseRestIntegrationService
 {
     protected HttpClientInterface $httpClient;
@@ -28,11 +33,17 @@ abstract class BaseRestIntegrationService
 
     abstract protected function getHeaders(): array;
 
+    /**
+     * @throws \Throwable
+     */
     public function get(string $path, array $options = []): ResponseInterface|array
     {
         return $this->request('GET', $path, $options);
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function post(string $path, array $options = []): ResponseInterface|array
     {
         return $this->request('POST', $path, $options);
@@ -43,11 +54,17 @@ abstract class BaseRestIntegrationService
         return $this->request('PUT', $path, $options);
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function delete(string $path, array $options = []): ResponseInterface|array
     {
         return $this->request('DELETE', $path, $options);
     }
 
+    /**
+     * @throws \Throwable
+     */
     protected function request(string $method, string $path, array $options = []): ResponseInterface|array
     {
         $url = rtrim($this->getBaseUrl(), '/').'/'.ltrim($path, '/');
@@ -64,6 +81,13 @@ abstract class BaseRestIntegrationService
         }
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws \Throwable
+     */
     protected function handleErrors(\Throwable $e): array
     {
         if ($e instanceof HttpException) {

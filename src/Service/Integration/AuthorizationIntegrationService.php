@@ -1,13 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\Integration;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * Classe responsável pela integração com a API de autorização.
+ */
 class AuthorizationIntegrationService extends BaseRestIntegrationService
 {
     private string $baseUrl;
@@ -26,6 +36,9 @@ class AuthorizationIntegrationService extends BaseRestIntegrationService
         return $this->baseUrl;
     }
 
+    /**
+     * @return string[]
+     */
     protected function getHeaders(): array
     {
         return [
@@ -33,6 +46,13 @@ class AuthorizationIntegrationService extends BaseRestIntegrationService
         ];
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     public function authorize(): array
     {
         $response = $this->get('/authorize');
