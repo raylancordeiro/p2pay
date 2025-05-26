@@ -6,13 +6,17 @@ use App\Entity\Transfer;
 use App\Entity\User;
 use App\Enum\UserRole;
 use App\Service\Integration\AuthorizationIntegrationService;
+use App\Service\Integration\NotifyIntegrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class TransferService
 {
-    public function __construct(private readonly EntityManagerInterface $em, private readonly AuthorizationIntegrationService $authorizationService)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly AuthorizationIntegrationService $authorizationService,
+        private readonly NotifyIntegrationService $notificationService,
+    ) {
     }
 
     /**
@@ -35,6 +39,8 @@ class TransferService
 
             $this->em->persist($transfer);
             $this->em->flush();
+
+            $this->notificationService->send($value, $transfer->getPayee()->getName());
 
             return $transfer;
         });
