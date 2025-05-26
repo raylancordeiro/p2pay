@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\User;
@@ -7,6 +9,9 @@ use App\Enum\UserRole;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+/**
+ * Data fixture responsável por criar usuários padrão do sistema.
+ */
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
