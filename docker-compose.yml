@@ -43,6 +43,21 @@ services:
     networks:
       - p2pay
 
+  messenger_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: p2pay_worker
+    working_dir: /var/www
+    command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=128M --no-interaction
+    depends_on:
+      - p2pay_php
+      - p2pay_mysql
+    volumes:
+      - ./:/var/www
+    networks:
+      - p2pay
+
 volumes:
   p2pay_mysql_data:
 

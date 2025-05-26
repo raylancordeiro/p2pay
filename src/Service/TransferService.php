@@ -5,17 +5,18 @@ namespace App\Service;
 use App\Entity\Transfer;
 use App\Entity\User;
 use App\Enum\UserRole;
+use App\Message\NotifyMessage;
 use App\Service\Integration\AuthorizationIntegrationService;
-use App\Service\Integration\NotifyIntegrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class TransferService
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly AuthorizationIntegrationService $authorizationService,
-        private readonly NotifyIntegrationService $notificationService,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -40,7 +41,10 @@ class TransferService
             $this->em->persist($transfer);
             $this->em->flush();
 
-            $this->notificationService->send($value, $transfer->getPayee()->getName());
+            $this->bus->dispatch(new NotifyMessage(
+                value: $value,
+                payeeName: $transfer->getPayee()->getName()
+            ));
 
             return $transfer;
         });
