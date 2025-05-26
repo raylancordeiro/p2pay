@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -14,6 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
+/**
+ * Controller responsável pelo CRUD de usuários.
+ */
 final class UserController extends BaseController
 {
     #[Route('/user', name: 'app_user_create', methods: ['POST'])]

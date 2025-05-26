@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\MessageHandler;
 
 use App\Message\NotifyMessage;
 use App\Service\Integration\NotifyIntegrationService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/**
+ * Classe responsável pela ação que será realizada pela fila.
+ */
 #[AsMessageHandler]
 class NotifyMessageHandler
 {

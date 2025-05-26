@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Validator\Constraints\UserExists;
@@ -9,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Classe de validação de transferências.
+ */
 class TransferType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\Integration;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Classe responsável pela integração com a API de envio de notificações SMS e e-mail.
+ */
 class NotifyIntegrationService extends BaseRestIntegrationService
 {
     private string $baseUrl;
@@ -24,6 +30,9 @@ class NotifyIntegrationService extends BaseRestIntegrationService
         return $this->baseUrl;
     }
 
+    /**
+     * @return string[]
+     */
     protected function getHeaders(): array
     {
         return [
@@ -31,6 +40,11 @@ class NotifyIntegrationService extends BaseRestIntegrationService
         ];
     }
 
+    /**
+     * @return string[]
+     *
+     * @throws TransportExceptionInterface
+     */
     public function send(int $value, string $payeeName): array
     {
         $response = $this->post('/notify', [
@@ -47,6 +61,6 @@ class NotifyIntegrationService extends BaseRestIntegrationService
             throw new HttpException($statusCode, 'Falha ao enviar notificação.');
         }
 
-        return ['messagge' => 'Notificação enviada com sucesso.'];
+        return ['message' => 'Notificação enviada com sucesso.'];
     }
 }
